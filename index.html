@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1024, initial-scale=1.0">
+<title>塔防游戏 - Tower Defense</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="game-container">
+    <canvas id="game-canvas" width="1024" height="768"></canvas>
+
+    <!-- Mode Selection -->
+    <div id="mode-select">
+        <div class="mode-select-bg"></div>
+        <div class="mode-select-content">
+            <h1 class="mode-title">🛡️ 保卫萝卜</h1>
+            <p class="mode-subtitle">Tower Defense</p>
+            <div class="mode-buttons">
+                <button class="mode-btn mode-btn-normal" onclick="Game.startGame('normal')">
+                    <span class="mode-btn-icon">🗺️</span>
+                    <span class="mode-btn-label">普通模式</span>
+                    <span class="mode-btn-desc">8波预设关卡</span>
+                </button>
+                <button class="mode-btn mode-btn-endless" onclick="Game.startGame('endless')">
+                    <span class="mode-btn-icon">♾️</span>
+                    <span class="mode-btn-label">无尽模式</span>
+                    <span class="mode-btn-desc">无限波次 · Boss每5波</span>
+                </button>
+            </div>
+            <p class="mode-hint">地图上会随机出现障碍物(宝箱/石头/树木)，用炮塔摧毁它们获得奖励！</p>
+            <p class="mode-hint">无尽模式Boss拥有治疗光环，会为周围怪物恢复血量</p>
+        </div>
+    </div>
+
+    <!-- HUD Top Bar -->
+    <div id="hud">
+        <div class="hud-hearts" id="hud-hearts"></div>
+        <div class="hud-gold" id="hud-gold">200</div>
+        <div class="hud-wave" id="hud-wave">准备战斗</div>
+        <button class="hud-btn" id="btn-next-wave" onclick="Game.startNextWave()">下一波 ▶</button>
+        <button class="hud-btn" id="btn-speed" onclick="Game.toggleSpeed()">1x</button>
+    </div>
+
+    <!-- Build Panel -->
+    <div id="build-panel"></div>
+
+    <!-- Selected Tower / Obstacle Info -->
+    <div id="tower-info-panel"></div>
+
+    <!-- Wave Announcement -->
+    <div id="wave-announce"></div>
+
+    <!-- Game Over -->
+    <div id="game-over-panel">
+        <div id="game-over-title"></div>
+        <div id="game-over-subtitle"></div>
+        <button id="game-over-btn" onclick="Game.restart()">重新开始</button>
+    </div>
+</div>
+
+<script src="js/eventbus.js"></script>
+<script src="js/bezier.js"></script>
+<script src="js/data.js"></script>
+<script src="js/path.js"></script>
+<script src="js/enemy.js"></script>
+<script src="js/tower.js"></script>
+<script src="js/projectile.js"></script>
+<script src="js/obstacle.js"></script>
+<script src="js/wave.js"></script>
+<script src="js/economy.js"></script>
+<script src="js/input.js"></script>
+<script src="js/renderer.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/game.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
