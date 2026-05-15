@@ -1,0 +1,60 @@
+var fs=require('fs');
+var src=fs.readFileSync('E:/IdeaProjects/111/js/ui/ui.js','utf8');
+
+// Find the broken showBuildPanel method and replace it
+var startMarker='UIManager.prototype.showBuildPanel = function';
+var endMarker='UIManager.prototype.showTowerInfo = function';
+var start=src.indexOf(startMarker);
+var end=src.indexOf(endMarker);
+if(start===-1 || end===-1){console.log('markers not found');process.exit(1);}
+
+var newMethod='';
+newMethod+='UIManager.prototype.showBuildPanel = function (platform) {\n';
+newMethod+='    this.hideAllPanels();\n';
+newMethod+='    if (!platform || platform.tower) return;\n';
+newMethod+='\n';
+newMethod+='    var panel = this.buildPanel;\n';
+newMethod+='    panel.innerHTML = "";\n';
+newMethod+='    // Horizontal layout\n';
+newMethod+='    panel.style.cssText = "display:flex;flex-direction:row;flex-wrap:wrap;gap:4px;padding:6px;max-width:420px;";
+newMethod+='    panel.style.cssText += "background:rgba(0,0,0,0.82);border:1px solid rgba(255,255,255,0.25);border-radius:10px;";
+newMethod+='    panel.style.cssText += "z-index:20;position:absolute;";\n';
+newMethod+='\n';
+newMethod+='    var keys = Object.keys(GameConfig.towers);\n';
+newMethod+='    for (var k = 0; k < keys.length; k++) {\n';
+newMethod+='        (function () {\n';
+newMethod+='            var key = keys[k];\n';
+newMethod+='            var td = GameConfig.towers[key];\n';
+newMethod+='            var cost = td.levels[0].upgradeCost;\n';
+newMethod+='            var ok = window.GoldMgr && window.GoldMgr.canAfford(cost);\n';
+newMethod+='            var btn = document.createElement("div");\n';
+newMethod+='            btn.style.cssText = "display:flex;flex-direction:column;align-items:center;gap:3px;";
+newMethod+='            btn.style.cssText += "background:" + (ok ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.05)") + ";";
+newMethod+='            btn.style.cssText += "border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:6px 10px;";
+newMethod+='            btn.style.cssText += "color:#fff;cursor:" + (ok ? "pointer" : "default") + ";";
+newMethod+='            btn.style.cssText += "font-size:11px;min-width:55px;text-align:center;";
+newMethod+='            btn.style.cssText += "opacity:" + (ok ? "1" : "0.45") + ";transition:background .2s;";\n';
+newMethod+='            if(ok){btn.onmouseenter=function(){this.style.background="rgba(255,255,255,0.22)";};';
+newMethod+='                   btn.onmouseleave=function(){this.style.background="rgba(255,255,255,0.12)";};}\n';
+newMethod+='            var icon=document.createElement("div");\n';
+newMethod+='            icon.style.cssText="width:30px;height:30px;border-radius:50%;background:"+td.color+";";
+newMethod+='            icon.style.cssText+="border:2px solid rgba(255,255,255,0.5);display:flex;align-items:center;";
+newMethod+='            icon.style.cssText+="justify-content:center;font-size:16px;";\n';
+newMethod+='            icon.textContent=td.icon;\n';
+newMethod+='            var nameEl=document.createElement("div");\n';
+newMethod+='            nameEl.style.cssText="font-weight:bold;font-size:10px;";\n';
+newMethod+='            nameEl.textContent=td.name;\n';
+newMethod+='            var costEl=document.createElement("div");\n';
+newMethod+='            costEl.style.cssText="color:#ffd700;font-size:10px;";\n';
+newMethod+='            costEl.textContent="💰"+cost;\n';
+newMethod+='            btn.appendChild(icon);btn.appendChild(nameEl);btn.appendChild(costEl);\n';
+newMethod+='            if(ok){btn.addEventListener("click",function(){Events.emit("buildTower",key,platform);});}\n';
+newMethod+='            panel.appendChild(btn);\n';
+newMethod+='        })();\n';
+newMethod+='    }\n';
+newMethod+='    this._positionPanelV2(panel, platform.x, platform.y);\n';
+newMethod+='};\n';
+
+src=src.substring(0,start)+newMethod+'\n'+src.substring(end);
+fs.writeFileSync('E:/IdeaProjects/111/js/ui/ui.js',src);
+console.log('fixed');

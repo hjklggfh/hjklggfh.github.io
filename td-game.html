@@ -25,6 +25,32 @@
                     <span class="mode-btn-desc">无限波次 · Boss每5波</span>
                 </button>
             </div>
+            <div class="mode-buttons" style="margin-top:16px">
+                <button class="mode-btn mode-btn-bestiary" id="btn-bestiary-towers" style="min-width:140px;padding:16px 24px">
+                    <span class="mode-btn-icon">🗼</span><span class="mode-btn-label">炮台图鉴</span>
+                    <span class="mode-btn-desc">6座炮塔详细数据</span>
+                </button>
+                <button class="mode-btn mode-btn-bestiary" id="btn-bestiary-monsters" style="min-width:140px;padding:16px 24px">
+                    <span class="mode-btn-icon">👾</span><span class="mode-btn-label">怪物图鉴</span>
+                    <span class="mode-btn-desc">5种怪物属性一览</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tower Bestiary Overlay -->
+    <div id="bestiary-towers" class="bestiary-overlay">
+        <div class="bestiary-content">
+            <div class="bestiary-header"><h2>🗼 炮台图鉴</h2><button class="bestiary-close" id="close-towers">✕</button></div>
+            <div class="bestiary-body" id="bestiary-towers-body"></div>
+        </div>
+    </div>
+
+    <!-- Monster Bestiary Overlay -->
+    <div id="bestiary-monsters" class="bestiary-overlay">
+        <div class="bestiary-content">
+            <div class="bestiary-header"><h2>👾 怪物图鉴</h2><button class="bestiary-close" id="close-monsters">✕</button></div>
+            <div class="bestiary-body" id="bestiary-monsters-body"></div>
         </div>
     </div>
 
@@ -50,6 +76,7 @@
             <div class="pause-icon">⏸</div>
             <div class="pause-text">游戏已暂停</div>
             <button class="pause-resume-btn">▶ 继续</button>
+            <button class="pause-home-btn">🏠 返回主页</button>
         </div>
     </div>
 
@@ -62,20 +89,20 @@
     <button id="btn-back" title="返回主菜单">🏠</button>
 </div>
 
-<script src="js/eventbus.js"></script>
-<script src="js/bezier.js"></script>
-<script src="js/data.js"></script>
-<script src="js/path.js"></script>
-<script src="js/enemy.js"></script>
-<script src="js/tower.js"></script>
-<script src="js/projectile.js"></script>
-<script src="js/obstacle.js"></script>
-<script src="js/wave.js"></script>
-<script src="js/economy.js"></script>
-<script src="js/input.js"></script>
-<script src="js/renderer.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/game.js"></script>
-<script src="js/main.js"></script>
+<script src="js/core/eventbus.js"></script>
+<script src="js/rendering/bezier.js"></script>
+<script src="js/data/data.js"></script>
+<script src="js/systems/path.js"></script>
+<script src="js/entities/enemy.js"></script>
+<script src="js/entities/tower.js"></script>
+<script src="js/entities/projectile.js"></script>
+<script src="js/entities/obstacle.js"></script>
+<script src="js/systems/wave.js"></script>
+<script src="js/systems/economy.js"></script>
+<script src="js/ui/input.js"></script>
+<script src="js/rendering/renderer.js"></script>
+<script src="js/ui/ui.js"></script>
+<script src="js/core/game.js"></script>
+<script src="js/core/main.js"></script>
 </body>
 </html>
