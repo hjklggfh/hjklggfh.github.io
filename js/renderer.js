@@ -193,10 +193,32 @@ class Renderer {
     // ── Towers ──
 
     drawTowers(towers, selectedTower) {
-        const ctx = this.ctx;
+        var ctx = this.ctx;
 
-        for (const tower of towers) {
-            const isSelected = tower === selectedTower;
+        for (var ti = 0; ti < towers.length; ti++) {
+            var tower = towers[ti];
+            if (!tower.alive) continue;
+
+            var isSelected = tower === selectedTower;
+
+            // Laser beam line
+            if (tower.data.isBeam && tower.beamActive && tower.currentTarget && tower.currentTarget.alive) {
+                ctx.strokeStyle = tower.data.projectileColor;
+                ctx.lineWidth = 4;
+                ctx.globalAlpha = 0.7;
+                ctx.beginPath();
+                ctx.moveTo(tower.x, tower.y);
+                ctx.lineTo(tower.beamTargetX, tower.beamTargetY);
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+                // Glow
+                ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(tower.x, tower.y);
+                ctx.lineTo(tower.beamTargetX, tower.beamTargetY);
+                ctx.stroke();
+            }
 
             if (isSelected) {
                 ctx.fillStyle = 'rgba(255,255,255,0.06)';
@@ -210,7 +232,7 @@ class Renderer {
                 ctx.setLineDash([]);
             }
 
-            const baseRadius = 16 + tower.level * 4;
+            var baseRadius = 16 + tower.level * 4;
             ctx.fillStyle = tower.data.color;
             ctx.beginPath();
             ctx.arc(tower.x, tower.y, baseRadius, 0, Math.PI * 2);
@@ -219,28 +241,42 @@ class Renderer {
             ctx.lineWidth = isSelected ? 2.5 : 1.5;
             ctx.stroke();
 
-            ctx.font = `${14 + tower.level * 2}px sans-serif`;
+            ctx.font = (14 + tower.level * 2) + 'px sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(tower.data.icon, tower.x, tower.y);
 
-            const barrelLen = 14 + tower.level * 3;
-            ctx.strokeStyle = 'rgba(255,255,255,0.8)';
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            ctx.moveTo(tower.x, tower.y);
-            ctx.lineTo(
-                tower.x + Math.cos(tower.angle) * barrelLen,
-                tower.y + Math.sin(tower.angle) * barrelLen
-            );
-            ctx.stroke();
+            // Barrel (non-beam towers)
+            if (!tower.data.isBeam) {
+                var barrelLen = 14 + tower.level * 3;
+                ctx.strokeStyle = 'rgba(255,255,255,0.8)';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.moveTo(tower.x, tower.y);
+                ctx.lineTo(tower.x + Math.cos(tower.angle) * barrelLen, tower.y + Math.sin(tower.angle) * barrelLen);
+                ctx.stroke();
+            }
 
-            for (let i = 0; i < tower.level; i++) {
-                const sx = tower.x - 10 + i * 10;
-                const sy = tower.y - baseRadius - 8;
+            // Level stars
+            for (var si = 0; si < tower.level; si++) {
+                var sx = tower.x - 10 + si * 10;
+                var sy = tower.y - baseRadius - 8;
                 ctx.fillStyle = '#ffd700';
                 ctx.font = '10px sans-serif';
                 ctx.fillText('★', sx, sy);
+            }
+
+            // HP bar (if damaged)
+            var hpPct = tower.getHPPercent();
+            if (hpPct < 1) {
+                var barW = 28;
+                var barH = 3;
+                var barY = tower.y + baseRadius + 8;
+                ctx.fillStyle = 'rgba(0,0,0,0.5)';
+                ctx.fillRect(tower.x - barW / 2, barY, barW, barH);
+                var hpColor = hpPct > 0.5 ? '#4caf50' : hpPct > 0.25 ? '#ff9800' : '#f44336';
+                ctx.fillStyle = hpColor;
+                ctx.fillRect(tower.x - barW / 2, barY, barW * hpPct, barH);
             }
         }
     }

@@ -2,77 +2,57 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=1024, initial-scale=1.0">
-<title>塔防游戏 - Tower Defense</title>
-<link rel="stylesheet" href="css/style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>游戏中心 - Game Center</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);min-height:100vh;
+font-family:'Segoe UI',sans-serif;color:#fff;overflow-x:hidden}
+.header{text-align:center;padding:40px 20px 30px}
+.header h1{font-size:42px;background:linear-gradient(90deg,#ffd700,#ff6b6b,#4ecdc4);
+-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.header p{color:#888;font-size:16px}
+.games-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:30px;padding:20px 40px 60px;max-width:1100px;margin:0 auto}
+.game-card{width:200px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);
+border-radius:20px;padding:28px 20px;text-align:center;cursor:pointer;
+transition:all .3s;text-decoration:none;color:#fff;display:block}
+.game-card:hover{background:rgba(255,255,255,0.12);transform:translateY(-8px);
+box-shadow:0 16px 40px rgba(0,0,0,0.4);border-color:rgba(255,255,255,0.3)}
+.game-card-icon{font-size:56px;margin-bottom:16px;display:block}
+.game-card-title{font-size:20px;font-weight:bold;margin-bottom:6px}
+.game-card-desc{font-size:12px;color:#aaa;line-height:1.5}
+.game-card.coming-soon{opacity:0.5;cursor:default}
+.game-card.coming-soon:hover{transform:none;box-shadow:none;border-color:rgba(255,255,255,0.12);background:rgba(255,255,255,0.06)}
+.badge{display:inline-block;background:#ff6b6b;color:#fff;font-size:11px;padding:2px 8px;border-radius:10px;margin-top:8px}
+.badge.new{background:#4ecdc4}
+.footer{text-align:center;padding:20px;color:#555;font-size:12px;position:fixed;bottom:0;width:100%}
+</style>
 </head>
 <body>
-<div id="game-container">
-    <canvas id="game-canvas" width="1024" height="768"></canvas>
-
-    <!-- Mode Selection -->
-    <div id="mode-select">
-        <div class="mode-select-bg"></div>
-        <div class="mode-select-content">
-            <h1 class="mode-title">🛡️ 保卫萝卜</h1>
-            <p class="mode-subtitle">Tower Defense</p>
-            <div class="mode-buttons">
-                <button class="mode-btn mode-btn-normal" onclick="Game.startGame('normal')">
-                    <span class="mode-btn-icon">🗺️</span>
-                    <span class="mode-btn-label">普通模式</span>
-                    <span class="mode-btn-desc">8波预设关卡</span>
-                </button>
-                <button class="mode-btn mode-btn-endless" onclick="Game.startGame('endless')">
-                    <span class="mode-btn-icon">♾️</span>
-                    <span class="mode-btn-label">无尽模式</span>
-                    <span class="mode-btn-desc">无限波次 · Boss每5波</span>
-                </button>
-            </div>
-            <p class="mode-hint">地图上会随机出现障碍物(宝箱/石头/树木)，用炮塔摧毁它们获得奖励！</p>
-            <p class="mode-hint">无尽模式Boss拥有治疗光环，会为周围怪物恢复血量</p>
-        </div>
+<div class="header">
+    <h1>🎮 游戏中心</h1>
+    <p>选择一个游戏开始游玩</p>
+</div>
+<div class="games-grid">
+    <a href="td-game.html" class="game-card">
+        <span class="game-card-icon">🛡️</span>
+        <div class="game-card-title">保卫萝卜</div>
+        <div class="game-card-desc">2D俯视塔防 · 贝塞尔路径<br>多种炮塔 · 无尽模式 · Boss战</div>
+        <span class="badge new">已更新</span>
+    </a>
+    <div class="game-card coming-soon">
+        <span class="game-card-icon">⚔️</span>
+        <div class="game-card-title">即将推出</div>
+        <div class="game-card-desc">新游戏开发中...</div>
+        <span class="badge">敬请期待</span>
     </div>
-
-    <!-- HUD Top Bar -->
-    <div id="hud">
-        <div class="hud-hearts" id="hud-hearts"></div>
-        <div class="hud-gold" id="hud-gold">200</div>
-        <div class="hud-wave" id="hud-wave">准备战斗</div>
-        <button class="hud-btn" id="btn-next-wave" onclick="Game.startNextWave()">下一波 ▶</button>
-        <button class="hud-btn" id="btn-speed" onclick="Game.toggleSpeed()">1x</button>
-    </div>
-
-    <!-- Build Panel -->
-    <div id="build-panel"></div>
-
-    <!-- Selected Tower / Obstacle Info -->
-    <div id="tower-info-panel"></div>
-
-    <!-- Wave Announcement -->
-    <div id="wave-announce"></div>
-
-    <!-- Game Over -->
-    <div id="game-over-panel">
-        <div id="game-over-title"></div>
-        <div id="game-over-subtitle"></div>
-        <button id="game-over-btn" onclick="Game.restart()">重新开始</button>
+    <div class="game-card coming-soon">
+        <span class="game-card-icon">🎯</span>
+        <div class="game-card-title">即将推出</div>
+        <div class="game-card-desc">新游戏开发中...</div>
+        <span class="badge">敬请期待</span>
     </div>
 </div>
-
-<script src="js/eventbus.js"></script>
-<script src="js/bezier.js"></script>
-<script src="js/data.js"></script>
-<script src="js/path.js"></script>
-<script src="js/enemy.js"></script>
-<script src="js/tower.js"></script>
-<script src="js/projectile.js"></script>
-<script src="js/obstacle.js"></script>
-<script src="js/wave.js"></script>
-<script src="js/economy.js"></script>
-<script src="js/input.js"></script>
-<script src="js/renderer.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/game.js"></script>
-<script src="js/main.js"></script>
+<div class="footer">Game Center &copy; 2026</div>
 </body>
 </html>

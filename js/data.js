@@ -11,6 +11,7 @@ const GameConfig = {
     // ── Economy ──
     startingGold: 200,
     sellRefundRatio: 0.5,
+    repairCostRatio: 0.6,  // repair cost = 60% of sell value
 
     // ── Gameplay ──
     autoAdvanceWaves: false,  // endless mode always auto-advances
@@ -131,6 +132,7 @@ const GameConfig = {
             appliesSlow: false,
             slowFactor: 1,
             slowDuration: 0,
+            towerHP: 40,
             levels: [
                 { range: 120, fireRate: 1.5, damage: 15, upgradeCost: 100, sellValue: 50 },
                 { range: 140, fireRate: 2.0, damage: 25, upgradeCost: 150, sellValue: 125 },
@@ -152,6 +154,7 @@ const GameConfig = {
             appliesSlow: true,
             slowFactor: 0.4,
             slowDuration: 2.5,
+            towerHP: 30,
             levels: [
                 { range: 100, fireRate: 0.8, damage: 8,  upgradeCost: 120, sellValue: 60 },
                 { range: 120, fireRate: 1.0, damage: 12, upgradeCost: 180, sellValue: 150 },
@@ -173,6 +176,7 @@ const GameConfig = {
             appliesSlow: false,
             slowFactor: 1,
             slowDuration: 0,
+            towerHP: 30,
             levels: [
                 { range: 110, fireRate: 1.0, damage: 20, upgradeCost: 150, sellValue: 75 },
                 { range: 130, fireRate: 1.2, damage: 35, upgradeCost: 220, sellValue: 185 },
@@ -194,10 +198,62 @@ const GameConfig = {
             appliesSlow: false,
             slowFactor: 1,
             slowDuration: 0,
+            towerHP: 40,
             levels: [
                 { range: 130, fireRate: 0.5, damage: 40, upgradeCost: 200, sellValue: 100 },
                 { range: 150, fireRate: 0.6, damage: 70, upgradeCost: 280, sellValue: 240 },
                 { range: 180, fireRate: 0.8, damage: 110, upgradeCost: 360, sellValue: 420 },
+            ]
+        },
+        laserCannon: {
+            id: 'laserCannon',
+            name: '激光炮',
+            type: 'LASER',
+            icon: '⚡',
+            color: '#e040fb',
+            description: '激光束 · 优先Boss',
+            projectileColor: '#ea80fc',
+            projectileSpeed: 999,
+            hasSplash: true,
+            splashRadius: 20,
+            isPenetrating: true,
+            appliesSlow: false,
+            slowFactor: 1,
+            slowDuration: 0,
+            isBeam: true,
+            prioritizeBoss: true,
+            towerHP: 30,
+            levels: [
+                { range: 300, fireRate: 1.0, damage: 20, upgradeCost: 300, sellValue: 250 },
+                { range: 320, fireRate: 1.2, damage: 30, upgradeCost: 400, sellValue: 450 },
+                { range: 350, fireRate: 1.5, damage: 45, upgradeCost: 500, sellValue: 700 },
+            ]
+        },
+        artilleryCannon: {
+            id: 'artilleryCannon',
+            name: '火炮',
+            type: 'FIRE',
+            icon: '💥',
+            color: '#ff7043',
+            description: 'AOE灼伤 · 范围打击',
+            projectileColor: '#ffab91',
+            projectileSpeed: 999,
+            hasSplash: true,
+            splashRadius: 150,
+            isPenetrating: true,
+            appliesSlow: false,
+            slowFactor: 1,
+            slowDuration: 0,
+            isAOE: true,
+            aoeRadius: 40,
+            appliesDot: true,
+            dotDps: 10,
+            dotDuration: 3,
+            towerHP: 25,
+            levels: [
+                { range: 250, fireRate: 2.0, damage: 50, upgradeCost: 350, sellValue: 300 },
+                { range: 270, fireRate: 2.2, damage: 75, upgradeCost: 450, sellValue: 525 },
+                { range: 300, fireRate: 2.5, damage: 105, upgradeCost: 550, sellValue: 800 },
             ]
         }
     },
@@ -259,6 +315,23 @@ const GameConfig = {
             isFlying: false,
             isImmuneToSlow: true,
             radius: 22,
+        },
+        bomber: {
+            id: 'bomber',
+            name: '自爆怪',
+            icon: '💣',
+            color: '#ff9800',
+            maxHP: 120,
+            moveSpeed: 70,
+            armor: 3,
+            goldReward: 20,
+            hpLeakCost: 2,
+            isFlying: false,
+            isImmuneToSlow: false,
+            radius: 12,
+            explodesOnDeath: true,
+            explosionRadius: 100,
+            explosionDamage: 35,
         },
     },
 

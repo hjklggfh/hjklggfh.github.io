@@ -1,49 +1,60 @@
 /**
- * Projectile entity - flies from tower toward target (enemy or obstacle).
+ * Projectile entity - flies from tower toward target.
+ * Supports: normal projectiles, AOE instant-strike (artillery), beam damage (laser).
  */
 class Projectile {
-    /**
-     * @param {object} fireData - from Tower.update()
-     */
     constructor(fireData) {
-        const d = fireData.data;
-        const s = d.levels[fireData.tower.level - 1];
+        var d = fireData.data;
+        var s = d.levels[fireData.tower.level - 1];
 
         this.x = fireData.x;
         this.y = fireData.y;
-        this.target = fireData.target;       // Enemy or Obstacle
-        this.targetType = fireData.targetType; // 'enemy' | 'obstacle'
+        this.tower = fireData.tower;
+        this.target = fireData.target;
+        this.targetType = fireData.targetType;
         this.damage = fireData.damage;
-        this.speed = d.projectileSpeed * 60; // convert to px/s
+        this.speed = (d.projectileSpeed || 8) * 60;
         this.alive = true;
 
-        // Effects (only for enemy targeting)
-        this.hasSplash = d.hasSplash && this.targetType === 'enemy';
+        // AOE artillery: instant strike at target position
+        this.isAOE = fireData.isAOE === true;
+        this.aoeRadius = fireData.aoeRadius || 40;
+        this.dotDps = fireData.dotDps || 0;
+        this.dotDuration = fireData.dotDuration || 0;
+
+        // Normal projectile effects
+        this.hasSplash = d.hasSplash && !this.isAOE;
         this.splashRadius = d.splashRadius;
-        this.isPenetrating = d.isPenetrating;
-        this.appliesSlow = d.appliesSlow && this.targetType === 'enemy';
+        this.isPenetrating = d.isPenetrating || this.isAOE;
+        this.appliesSlow = d.appliesSlow && !this.isAOE;
         this.slowFactor = d.slowFactor;
         this.slowDuration = d.slowDuration;
 
         // Visual
         this.color = d.projectileColor;
-        this.radius = 4;
+        this.radius = this.isAOE ? 6 : 4;
         this.trail = [];
         this.maxTrailLength = 8;
 
-        this.lifetime = 5;
+        this.lifetime = this.isAOE ? 0.5 : 5;
         this.age = 0;
+
+        // AOE applies instantly
+        if (this.isAOE) this._applyAOE();
     }
 
     update(dt) {
-        this.age += dt;
-        if (this.age > this.lifetime) {
-            this.alive = false;
+        if (!this.alive) return;
+        if (this.isAOE) {
+            this.age += dt;
+            if (this.age > this.lifetime) this.alive = false;
             return;
         }
 
-        // Move toward target
-        let targetX, targetY;
+        this.age += dt;
+        if (this.age > this.lifetime) { this.alive = false; return; }
+
+        var targetX, targetY;
         if (this.target && this.target.alive) {
             targetX = this.target.x;
             targetY = this.target.y;
@@ -52,65 +63,77 @@ class Projectile {
             return;
         }
 
-        const dx = targetX - this.x;
-        const dy = targetY - this.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+        var dx = targetX - this.x;
+        var dy = targetY - this.y;
+        var dist = Math.sqrt(dx * dx + dy * dy);
 
-        if (dist < 4) {
-            this._onHit();
-            return;
-        }
+        if (dist < 4) { this._onHit(); return; }
 
-        const moveDist = this.speed * dt;
+        var moveDist = this.speed * dt;
         this.x += (dx / dist) * Math.min(moveDist, dist);
         this.y += (dy / dist) * Math.min(moveDist, dist);
 
-        // Trail
         this.trail.push({ x: this.x, y: this.y });
         if (this.trail.length > this.maxTrailLength) this.trail.shift();
 
-        // Check if close enough to hit
-        const hitThreshold = this.targetType === 'obstacle' ? this.target.radius + 4 : 10;
-        if (dist < hitThreshold) {
-            this._onHit();
+        var hitThreshold = this.targetType === 'obstacle' ? (this.target.radius + 4) : 10;
+        if (dist < hitThreshold) this._onHit();
+    }
+
+    _applyAOE() {
+        var enemies = window.Game && window.Game.getEnemies ? window.Game.getEnemies() : [];
+        for (var i = 0; i < enemies.length; i++) {
+            var enemy = enemies[i];
+            if (!enemy.alive) continue;
+            var dx = enemy.x - this.x;
+            var dy = enemy.y - this.y;
+            if (Math.sqrt(dx * dx + dy * dy) <= this.aoeRadius) {
+                this._applyTo(enemy);
+                // Apply DoT burn effect
+                if (this.dotDps > 0) {
+                    enemy.applyDot(this.dotDps, this.dotDuration);
+                }
+            }
+        }
+        // Also hit obstacles in AOE
+        var obstacles = window.Game && window.Game.obstacles ? window.Game.obstacles : [];
+        for (var j = 0; j < obstacles.length; j++) {
+            var obs = obstacles[j];
+            if (!obs.alive) continue;
+            var odx = obs.x - this.x;
+            var ody = obs.y - this.y;
+            if (Math.sqrt(odx * odx + ody * ody) <= this.aoeRadius) {
+                obs.takeDamage(this.damage);
+            }
         }
     }
 
     _onHit() {
         if (this.targetType === 'obstacle') {
-            // Deal damage to obstacle
-            if (this.target && this.target.alive) {
-                this.target.takeDamage(this.damage);
-            }
+            if (this.target && this.target.alive) this.target.takeDamage(this.damage);
             this.alive = false;
             return;
         }
 
-        // Enemy targeting
-        const enemies = Game.getEnemies ? Game.getEnemies() : [];
+        var enemies = window.Game && window.Game.getEnemies ? window.Game.getEnemies() : [];
 
         if (this.hasSplash) {
-            for (const enemy of enemies) {
+            for (var i = 0; i < enemies.length; i++) {
+                var enemy = enemies[i];
                 if (!enemy.alive) continue;
-                const dx = enemy.x - this.x;
-                const dy = enemy.y - this.y;
-                if (Math.sqrt(dx * dx + dy * dy) <= this.splashRadius) {
-                    this._applyTo(enemy);
-                }
+                var dx = enemy.x - this.x;
+                var dy = enemy.y - this.y;
+                if (Math.sqrt(dx * dx + dy * dy) <= this.splashRadius) this._applyTo(enemy);
             }
         } else if (this.target && this.target.alive) {
             this._applyTo(this.target);
         }
 
-        if (!this.isPenetrating) {
-            this.alive = false;
-        }
+        if (!this.isPenetrating) this.alive = false;
     }
 
     _applyTo(enemy) {
         enemy.takeDamage(this.damage);
-        if (this.appliesSlow) {
-            enemy.applySlow(this.slowFactor, this.slowDuration);
-        }
+        if (this.appliesSlow) enemy.applySlow(this.slowFactor, this.slowDuration);
     }
 }

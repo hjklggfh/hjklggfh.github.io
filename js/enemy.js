@@ -163,6 +163,10 @@ class Enemy {
     die() {
         if (!this.alive) return;
         this.alive = false;
+        // Bomber explosion
+        if (this.data.explodesOnDeath) {
+            Events.emit('enemyExploded', this, this.data.explosionRadius, this.data.explosionDamage);
+        }
         Events.emit('enemyDied', this, this.goldReward);
     }
 
