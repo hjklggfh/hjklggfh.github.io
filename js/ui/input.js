@@ -188,9 +188,9 @@ class InputHandler {
         }
         if (this._isDragging || !this._touchStartPos) return;
         var pos = this._touchStartPos;
+        this._onClick({ clientX: pos.x, clientY: pos.y });
         this._handledTouch = true;
         var self = this;
         setTimeout(function () { self._handledTouch = false; }, 400);
-        this._onClick({ clientX: pos.x, clientY: pos.y });
     }
 }
