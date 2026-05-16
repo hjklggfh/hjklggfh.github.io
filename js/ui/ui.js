@@ -199,7 +199,9 @@ UIManager.prototype.showBuildPanel = function (p) {
     if (!p || p.tower) return;
     var panel = this.buildPanel;
     panel.innerHTML = "";
-    panel.style.cssText = "display:flex;flex-direction:row;flex-wrap:wrap;gap:4px;padding:6px;max-width:390px;background:rgba(0,0,0,0.85);border:1px solid rgba(255,255,255,0.3);border-radius:10px;z-index:20;position:absolute";
+    var containerRect = document.getElementById('game-container').getBoundingClientRect();
+    var maxW = Math.min(390, containerRect.width * 0.4) + 'px';
+    panel.style.cssText = 'display:flex;flex-direction:row;flex-wrap:wrap;gap:4px;padding:6px;max-width:' + maxW + ';background:rgba(0,0,0,0.85);border:1px solid rgba(255,255,255,0.3);border-radius:10px;z-index:20;position:absolute';
     var keys = Object.keys(GameConfig.towers);
     for (var k = 0; k < keys.length; k++) {
         (function () {
@@ -300,8 +302,10 @@ UIManager.prototype.showObstacleInfo = function (obstacle) {
 UIManager.prototype._positionPanelV2 = function (panel, wx, wy) {
     var container = document.getElementById("game-container");
     var containerRect = container.getBoundingClientRect();
-    var scaleX = containerRect.width / 1024;
-    var scaleY = containerRect.height / 768;
+    var worldW = window.LayoutManager ? window.LayoutManager.GAME_WIDTH : 1024;
+    var worldH = window.LayoutManager ? window.LayoutManager.GAME_HEIGHT : 768;
+    var scaleX = containerRect.width / worldW;
+    var scaleY = containerRect.height / worldH;
     var cx = containerRect.left;
     var cy = containerRect.top;
     var worldSX = cx + wx * scaleX;
@@ -314,10 +318,10 @@ UIManager.prototype._positionPanelV2 = function (panel, wx, wy) {
     // If above goes off-screen, put below
     if (sy < cy + 5) sy = worldSY + 25;
     // If below also goes off, put above and near bottom
-    if (sy + panelH > cy + 768 - 5) sy = cy + 768 - panelH - 5;
+    if (sy + panelH > cy + containerRect.height - 5) sy = cy + containerRect.height - panelH - 5;
     // Clamp left/right to container
     if (sx < cx + 5) sx = cx + 5;
-    if (sx + panelW > cx + 1024 - 5) sx = cx + 1024 - panelW - 5;
+    if (sx + panelW > cx + containerRect.width - 5) sx = cx + containerRect.width - panelW - 5;
     panel.style.left = sx + "px";
     panel.style.top = sy + "px";
 };
