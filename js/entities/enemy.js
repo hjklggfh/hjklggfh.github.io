@@ -76,7 +76,7 @@ class Enemy {
                 this._slowFactor = 1;
             }
         }
-        this.currentSpeed = this.baseSpeed * this._slowFactor;
+        this.currentSpeed = Math.min(this.baseSpeed * 1.5, this.baseSpeed * this._slowFactor);
 
         // Update DoT effects
         for (let i = this.activeEffects.length - 1; i >= 0; i--) {
@@ -132,10 +132,10 @@ class Enemy {
         }
     }
 
-    takeDamage(baseDamage) {
+    takeDamage(baseDamage, ignoreArmor) {
         if (!this.alive) return;
 
-        const effective = Math.max(1, baseDamage - this.armor);
+        var effective = ignoreArmor ? baseDamage : Math.max(1, baseDamage - this.armor);
         this.hp -= effective;
 
         if (this.hp <= 0) {

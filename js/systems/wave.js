@@ -71,12 +71,12 @@ class WaveManager {
             var armorBonus = Math.floor((waveNum - 1) / 3) * (wcfg.armorPer3Waves || 1);
 
             enemyData.maxHP = Math.round(baseData.maxHP * hpScale);
-            enemyData.moveSpeed = Math.round(baseData.moveSpeed * spdScale);
+            enemyData.moveSpeed = Math.min(Math.round(baseData.moveSpeed * 1.5), Math.round(baseData.moveSpeed * spdScale));
             enemyData.armor = baseData.armor + armorBonus;
 
             // Apply additional endless-mode scaling on top
             if (entry._hpScale) enemyData.maxHP = Math.round(enemyData.maxHP * entry._hpScale);
-            if (entry._speedScale) enemyData.moveSpeed = Math.round(enemyData.moveSpeed * entry._speedScale);
+            if (entry._speedScale) enemyData.moveSpeed = Math.min(Math.round(baseData.moveSpeed * 1.5), Math.round(enemyData.moveSpeed * entry._speedScale));
             if (entry._armor !== undefined) enemyData.armor = entry._armor;
 
             // Gold scales +10% per wave

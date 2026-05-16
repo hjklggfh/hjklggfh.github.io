@@ -437,7 +437,7 @@ var Game = {
                     // fireData indicates a "tick" just occurred (cooldown expired)
                     // Apply instant beam damage to target
                     var target = tower.currentTarget;
-                    target.takeDamage(tower.damage);
+                    target.takeDamage(tower.damage, tower.data.armorPiercing === true);
                     // Beam splash
                     if (tower.data.hasSplash && tower.data.splashRadius > 0) {
                         for (var k = 0; k < this.enemies.length; k++) {
@@ -446,7 +446,7 @@ var Game = {
                             var edx = e2.x - target.x;
                             var edy = e2.y - target.y;
                             if (Math.sqrt(edx * edx + edy * edy) <= tower.data.splashRadius) {
-                                e2.takeDamage(tower.damage * 0.5);
+                                e2.takeDamage(tower.damage * 0.5, tower.data.armorPiercing === true);
                             }
                         }
                     }

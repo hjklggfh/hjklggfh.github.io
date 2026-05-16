@@ -26,6 +26,7 @@ class Projectile {
         this.hasSplash = d.hasSplash && !this.isAOE;
         this.splashRadius = d.splashRadius;
         this.splashDamage = d.splashDamage || 0;
+        this.armorPiercing = d.armorPiercing === true;
         this.isPenetrating = d.isPenetrating || this.isAOE;
         this.appliesSlow = d.appliesSlow && !this.isAOE;
         this.slowFactor = d.slowFactor;
@@ -155,7 +156,7 @@ class Projectile {
                 if (!enemy.alive) continue;
                 var dx = enemy.x - this.x;
                 var dy = enemy.y - this.y;
-                if (Math.sqrt(dx * dx + dy * dy) <= this.splashRadius) { if (this.splashDamage > 0) enemy.takeDamage(this.splashDamage); else this._applyTo(enemy); }
+                if (Math.sqrt(dx * dx + dy * dy) <= this.splashRadius) { if (this.splashDamage > 0) enemy.takeDamage(this.splashDamage, this.armorPiercing); else this._applyTo(enemy); }
             }
         } else if (this.target && this.target.alive) {
             this._applyTo(this.target);
@@ -165,7 +166,7 @@ class Projectile {
     }
 
     _applyTo(enemy) {
-        enemy.takeDamage(this.damage);
+        enemy.takeDamage(this.damage, this.armorPiercing);
         if (this.appliesSlow) enemy.applySlow(this.slowFactor, this.slowDuration);
     }
 }
