@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>问道长生 RPG</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="game-shell">
+      <section class="viewport-panel">
+        <canvas id="game" width="960" height="640" aria-label="问道长生游戏画面"></canvas>
+        <div id="toast" class="toast" hidden></div>
+      </section>
+
+      <aside class="side-panel">
+        <header class="title-block">
+          <h1>问道长生</h1>
+          <p id="areaName">凡尘大陆</p>
+        </header>
+
+        <section class="stats">
+          <div>
+            <span>位阶</span>
+            <strong id="realmText">炼气</strong>
+          </div>
+          <div>
+            <span>等级</span>
+            <strong id="levelText">1</strong>
+          </div>
+          <div>
+            <span>灵石</span>
+            <strong id="spiritStoneText">120</strong>
+          </div>
+        </section>
+
+        <section class="bars">
+          <label>气血 <span id="hpText"></span></label>
+          <meter id="hpBar" min="0" max="100" value="100"></meter>
+          <label>灵力 <span id="mpText"></span></label>
+          <meter id="mpBar" min="0" max="100" value="100"></meter>
+          <label>修炼 <span id="cultivationText"></span></label>
+          <meter id="cultivationBar" min="0" max="100" value="0"></meter>
+        </section>
+
+        <nav class="tabs" aria-label="功能面板">
+          <button class="tab active" data-panel="log">见闻</button>
+          <button class="tab" data-panel="character">角色</button>
+          <button class="tab" data-panel="inventory">背包</button>
+          <button class="tab" data-panel="market">集市</button>
+        </nav>
+
+        <section id="logPanel" class="panel active">
+          <div id="log" class="log"></div>
+        </section>
+
+        <section id="characterPanel" class="panel">
+          <div id="characterInfo" class="character-info"></div>
+          <button id="breakthroughBtn" class="primary">尝试突破</button>
+          <button id="cultivateBtn">消耗 20 灵石修炼</button>
+        </section>
+
+        <section id="inventoryPanel" class="panel">
+          <div class="filters">
+            <button class="filter active" data-filter="all">全部</button>
+            <button class="filter" data-filter="功法">功法</button>
+            <button class="filter" data-filter="丹药">丹药</button>
+            <button class="filter" data-filter="符咒">符咒</button>
+            <button class="filter" data-filter="装备">装备</button>
+            <button class="filter" data-filter="材料">材料</button>
+          </div>
+          <div id="inventoryGrid" class="inventory-grid"></div>
+        </section>
+
+        <section id="marketPanel" class="panel">
+          <div id="marketHint" class="muted">进入主城集市后可交易。</div>
+          <div id="marketGrid" class="market-grid"></div>
+        </section>
+
+        <footer class="controls">
+          <button id="saveBtn">存档</button>
+          <button id="loadBtn">读档</button>
+          <button id="newBtn">新局</button>
+        </footer>
+      </aside>
+    </main>
+
+    <div id="interactionModal" class="modal" hidden>
+      <div class="modal-card">
+        <header>
+          <h2 id="modalTitle"></h2>
+          <button id="closeModal" class="icon-btn" aria-label="关闭">×</button>
+        </header>
+        <div id="modalBody"></div>
+        <div id="modalActions" class="modal-actions"></div>
+      </div>
+    </div>
+
+    <script src="game.js"></script>
+  </body>
+</html>

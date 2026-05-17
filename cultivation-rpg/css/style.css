@@ -1,0 +1,30 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background:
+        radial-gradient(circle at 50% 18%, rgba(142, 211, 176, 0.24), transparent 32%),
+        linear-gradient(135deg, #101b18 0%, #20352f 48%, #171421 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+#game-container {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    border: 1px solid rgba(255, 240, 184, 0.36);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45), 0 0 32px rgba(142, 211, 176, 0.18);
+    background: #17322c;
+}
+
+#game-container canvas {
+    display: block;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}

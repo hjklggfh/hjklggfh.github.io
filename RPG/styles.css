@@ -1,0 +1,326 @@
+:root {
+  color-scheme: dark;
+  --bg: #141713;
+  --panel: #20261f;
+  --panel-2: #2b3329;
+  --line: #45503f;
+  --text: #f0ead7;
+  --muted: #b7b39f;
+  --accent: #d8b45a;
+  --danger: #d96b5f;
+  --good: #6fc17b;
+  --blue: #70a8d8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #111410;
+  color: var(--text);
+  font-family: "Microsoft YaHei", "Segoe UI", sans-serif;
+  overflow: hidden;
+}
+
+button {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #30382e;
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  min-height: 34px;
+  padding: 6px 10px;
+}
+
+button:hover {
+  border-color: var(--accent);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+.primary {
+  background: #79602a;
+  border-color: #c69b40;
+}
+
+.game-shell {
+  display: grid;
+  grid-template-columns: minmax(600px, 1fr) 360px;
+  gap: 12px;
+  height: 100vh;
+  padding: 12px;
+}
+
+.viewport-panel {
+  position: relative;
+  border: 1px solid var(--line);
+  background: #080a08;
+  min-width: 0;
+}
+
+#game {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+.toast {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  border: 1px solid #877248;
+  border-radius: 6px;
+  background: rgba(20, 23, 19, 0.9);
+  color: var(--text);
+  max-width: 80%;
+  padding: 9px 12px;
+  text-align: center;
+}
+
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  min-width: 0;
+  padding: 12px;
+}
+
+.title-block h1 {
+  margin: 0;
+  font-size: 25px;
+  letter-spacing: 0;
+}
+
+.title-block p {
+  margin: 3px 0 0;
+  color: var(--accent);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.stats div {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--panel-2);
+  padding: 8px;
+}
+
+.stats span,
+.bars label,
+.muted {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.stats strong {
+  display: block;
+  font-size: 18px;
+  margin-top: 3px;
+}
+
+.bars {
+  display: grid;
+  gap: 5px;
+}
+
+meter {
+  width: 100%;
+  height: 12px;
+}
+
+.tabs,
+.filters,
+.controls,
+.modal-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.tab,
+.filter {
+  flex: 1;
+  min-width: 0;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.tab.active,
+.filter.active {
+  border-color: var(--accent);
+  background: #4a3f25;
+}
+
+.panel {
+  display: none;
+  min-height: 0;
+  overflow: auto;
+}
+
+.panel.active {
+  display: block;
+  flex: 1;
+}
+
+.log {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.log-entry {
+  border-left: 3px solid var(--line);
+  background: #1a1f19;
+  padding: 7px 8px;
+}
+
+.character-info {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #363f33;
+  padding-bottom: 5px;
+}
+
+.inventory-grid,
+.market-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.slot,
+.market-item {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #1b211a;
+  min-height: 74px;
+  padding: 7px;
+}
+
+.slot strong,
+.market-item strong {
+  display: block;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.25;
+}
+
+.slot span,
+.market-item span {
+  display: block;
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.slot button,
+.market-item button {
+  width: 100%;
+  margin-top: 6px;
+  min-height: 28px;
+  padding: 3px 5px;
+  font-size: 12px;
+}
+
+.controls {
+  margin-top: auto;
+}
+
+.controls button {
+  flex: 1;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.55);
+  padding: 16px;
+}
+
+.modal-card {
+  width: min(520px, 100%);
+  max-height: 82vh;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  padding: 14px;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
+}
+
+.modal-card header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.modal-card h2 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.icon-btn {
+  width: 34px;
+  padding: 0;
+  font-size: 22px;
+}
+
+.npc-line,
+.loot-line {
+  border: 1px solid #394334;
+  border-radius: 6px;
+  background: #1b211a;
+  margin: 8px 0;
+  padding: 8px;
+}
+
+@media (max-width: 900px) {
+  body {
+    overflow: auto;
+  }
+
+  .game-shell {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .viewport-panel {
+    height: 64vh;
+  }
+
+  .side-panel {
+    min-height: 560px;
+  }
+}
