@@ -1,0 +1,49 @@
+{
+    "compressionlevel": -1,
+    "height": 100,
+    "width": 100,
+    "tileheight": 32,
+    "tilewidth": 32,
+    "infinite": false,
+    "layers": [
+        {
+            "id": 1,
+            "name": "ground",
+            "type": "tilelayer",
+            "width": 100,
+            "height": 100,
+            "data": []
+        },
+        {
+            "id": 2,
+            "name": "collision",
+            "type": "tilelayer",
+            "width": 100,
+            "height": 100,
+            "data": []
+        },
+        {
+            "id": 3,
+            "name": "objects",
+            "type": "objectgroup",
+            "objects": []
+        }
+    ],
+    "nextlayerid": 4,
+    "nextobjectid": 1,
+    "orientation": "orthogonal",
+    "renderorder": "right-down",
+    "tilesets": [
+        {
+            "firstgid": 1,
+            "name": "terrain",
+            "tilewidth": 32,
+            "tileheight": 32,
+            "tilecount": 8,
+            "columns": 8,
+            "image": "../tilesets/terrain.png",
+            "imagewidth": 256,
+            "imageheight": 32
+        }
+    ]
+}

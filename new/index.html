@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>修仙传</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="game-container"></div>
+
+    <!-- Phaser Framework -->
+    <script src="lib/phaser.min.js"></script>
+
+    <!-- Config -->
+    <script src="js/config/GameConstants.js"></script>
+    <script src="js/config/CultivationData.js"></script>
+    <script src="js/config/ItemDatabase.js"></script>
+    <script src="js/config/NPCDatabase.js"></script>
+
+    <!-- Core -->
+    <script src="js/core/EventBus.js"></script>
+    <script src="js/core/GameState.js"></script>
+    <script src="js/core/SaveManager.js"></script>
+
+    <!-- Utils -->
+    <script src="js/utils/Random.js"></script>
+    <script src="js/utils/NameGenerator.js"></script>
+    <script src="js/utils/PriceCalculator.js"></script>
+
+    <!-- Entities -->
+    <script src="js/entities/Player.js"></script>
+    <script src="js/entities/NPC.js"></script>
+    <script src="js/entities/Monster.js"></script>
+
+    <!-- Systems -->
+    <script src="js/systems/MapManager.js"></script>
+    <script src="js/systems/NPCSpawner.js"></script>
+    <script src="js/systems/NPCAI.js"></script>
+    <script src="js/systems/DialogueManager.js"></script>
+    <script src="js/systems/CultivationSystem.js"></script>
+    <script src="js/systems/CombatManager.js"></script>
+    <script src="js/systems/CombatAI.js"></script>
+    <script src="js/systems/MarketManager.js"></script>
+    <script src="js/systems/InventoryManager.js"></script>
+    <script src="js/systems/TeleportManager.js"></script>
+    <script src="js/systems/CaveManager.js"></script>
+
+    <!-- UI -->
+    <script src="js/ui/HUD.js"></script>
+    <script src="js/ui/DialogueBox.js"></script>
+    <script src="js/ui/InventoryGrid.js"></script>
+    <script src="js/ui/CharacterPanel.js"></script>
+    <script src="js/ui/MarketPanel.js"></script>
+    <script src="js/ui/BattleUI.js"></script>
+    <script src="js/ui/Notification.js"></script>
+
+    <!-- Scenes -->
+    <script src="js/scenes/BootScene.js"></script>
+    <script src="js/scenes/MenuScene.js"></script>
+    <script src="js/scenes/GameScene.js"></script>
+    <script src="js/scenes/BattleScene.js"></script>
+    <script src="js/scenes/DialogueScene.js"></script>
+    <script src="js/scenes/InventoryScene.js"></script>
+    <script src="js/scenes/MarketplaceScene.js"></script>
+    <script src="js/scenes/BreakthroughScene.js"></script>
+    <script src="js/scenes/TeleportScene.js"></script>
+    <script src="js/scenes/CaveInteriorScene.js"></script>
+
+    <!-- Entry Point -->
+    <script src="js/main.js"></script>
+</body>
+</html>
